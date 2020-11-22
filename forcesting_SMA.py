@@ -49,7 +49,11 @@ for t in range(0, len(CLOSE_STOCKS)):
     mapeSum += abs(CLOSE_STOCKS[t] - movingAverage[t])/CLOSE_STOCKS[t]
     mape.append(float("{:.2f}".format(100 - (mapeSum/(t+1)) * 100)))
 
-print("SMA({}) - {}\nDATE\t\tCLOSE\t\t\tFORECASTING BESOK".format(n, STOCKS))
+f.write("""
+<pre>
+SMA({}) - {}\nDATE\t\tCLOSE\t\t\tFORECASTING BESOK
+</pre>
+""".format(n, STOCKS))
 for i in range(0, len(DATE_STOCKS)):
     actual = "NULL"
     forcasting = "NULL"
@@ -59,11 +63,11 @@ for i in range(0, len(DATE_STOCKS)):
 
     if (i >= (n-1)):
       if (movingAverage[i] - (CLOSE_STOCKS[i]) < 0):
-        forcasting = "Forcasting Besok: TURUN"
+        forcasting = "Forcasting Besok: [TURUN]"
       elif (movingAverage[i] - (CLOSE_STOCKS[i]) > 0):
-        forcasting = "Forcasting Besok: NAIK"
+        forcasting = "Forcasting Besok: [NAIK]"
       else:
-        forcasting = "Forcasting Besok: DATAR"
+        forcasting = "Forcasting Besok: [DATAR]"
 
     if (CLOSE_STOCKS[i] > CLOSE_STOCKS[i-1]):
       actual = "[NAIK]"
@@ -72,8 +76,8 @@ for i in range(0, len(DATE_STOCKS)):
     else:
       actual = "[DATAR]"
 
-    print(
+    f.write(
           str(DATE_STOCKS[i]) + '\t{:.2f}\t{}'.format(CLOSE_STOCKS[i], actual) 
           + '\t\t' + str(movingAverage[i]) + "\t{}\n".format(forcasting) 
          ) 
-print("Tingkat Akurasi Forcasting untuk besok: {}%".format(mape[-1]))
+f.write("""Tingkat Akurasi Forcasting untuk besok: {}%""".format(mape[-1]))
