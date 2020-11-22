@@ -1,12 +1,6 @@
 import json
 import datetime as dt
 
-# DECLARING VARIABLE
-priceSum = 0
-mape = []
-mapeSum = 0
-movingAverage = []
-
 # GET CURRENT DAY/MONTH/YEAR
 currentTime = dt.datetime.now()
 
@@ -19,6 +13,13 @@ STOCKS = json.load(open("data/stock_index/LQ45.json"))
 
 # TRAVARSE TO ALL STOCKS ELEMENT TIME COMPLEXITY: O(N)
 for k in range(0, len(STOCKS)):
+
+  # DECLARING VARIABLE FRASH VARIBLE EVREY ITERATION
+  priceSum = 0
+  mape = []
+  mapeSum = 0
+  movingAverage = []
+
   # LOAD JSON FILE
   DATA = json.load(open("STOCK_CHART/{}-{}-{}.json"
                     .format(STOCKS[k], source,
@@ -41,7 +42,7 @@ for k in range(0, len(STOCKS)):
   for t in range(0, len(CLOSE_STOCKS)):
 
     # CHECK DATA IF CLOSE_STOCKS[ITERATION-t] is NONE AND CHANGE TO 0
-    if (CLOSE_STOCKS[t] == None or CLOSE_STOCKS[t] == 0.0):
+    if ((CLOSE_STOCKS[t] == None) or (CLOSE_STOCKS[t] == 0.0)):
       CLOSE_STOCKS[t] = 1
 
     # CHECK IF ITERATION-t IN SUBARRAY [0 ... n-1]
