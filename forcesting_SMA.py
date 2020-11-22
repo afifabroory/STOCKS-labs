@@ -41,8 +41,8 @@ for k in range(0, len(STOCKS)):
   for t in range(0, len(CLOSE_STOCKS)):
 
     # CHECK DATA IF CLOSE_STOCKS[ITERATION-t] is NONE AND CHANGE TO 0
-    if (CLOSE_STOCKS[t] == None):
-      CLOSE_STOCKS[t] = 0.0
+    if (CLOSE_STOCKS[t] == None or CLOSE_STOCKS[t] == 0.0):
+      CLOSE_STOCKS[t] = 1
 
     # CHECK IF ITERATION-t IN SUBARRAY [0 ... n-1]
     if (t < n):
@@ -76,7 +76,7 @@ for k in range(0, len(STOCKS)):
 
 
   # LOAD FILE/CREATE FILE
-  f = open("data/html/SMA{}-{}.html".format(n, STOCKS[k]), 'w')
+  f = open("data/html/SMA({})-{}.html".format(n, STOCKS[k]), 'w')
 
   # WRITE TO HTML
   f.write("""
