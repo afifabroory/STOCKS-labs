@@ -68,12 +68,12 @@ for k in range(0, len(STOCKS)):
     movingAverage.append(float("{:.2f}".format(Mt)))
 
     # CALCULATE MAPE AND ADD CALCULATION TO MAPE[] TO PERCENTAGE FORMAT.
-    # FORMULA: MAPE = 1/n SUM(At - Ft/At) * 100
+    # FORMULA: MAPE = 1/n SUM(At - Ft/At)
     # n             : Number of times the summuation iteration happen
     # At            : Actual Value
     # Ft            : Forcast Value
-    mapeSum += (abs(CLOSE_STOCKS[t] - movingAverage[t])/CLOSE_STOCKS[t])
-    mape.append(float("{:.2f}".format(100 - ((mapeSum/(t+1) * 100)))))
+    mapeSum += abs(CLOSE_STOCKS[t] - movingAverage[t])/CLOSE_STOCKS[t]
+    mape.append(float("{:.2f}".format((100-(mapeSum/(t+1))))))
 
 
   # LOAD FILE/CREATE FILE
@@ -118,6 +118,6 @@ for k in range(0, len(STOCKS)):
             + '\t\t' + str(movingAverage[i]) + "\t{}\n".format(forcasting) 
            ) 
 
-  # WRITE TO HTML
+    # WRITE TO HTML
   f.write("""
-  Tingkat Akurasi Forcasting untuk besok: {}%</pre>""".format(mape[-1]))
+Tingkat Akurasi Forcasting untuk besok: {}%</pre>""".format(mape[-1]))
