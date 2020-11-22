@@ -128,10 +128,13 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
+# MY CONFIGURATION
 # Log
 *.log
 
 #html
 *.html
 data/html
+
+#Python
+jsonBeautify.py

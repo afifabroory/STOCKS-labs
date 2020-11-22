@@ -119,5 +119,4 @@ for k in range(0, len(STOCKS)):
            ) 
 
     # WRITE TO HTML
-  f.write("""
-Tingkat Akurasi Forcasting untuk besok: {}%</pre>""".format(mape[-1]))
+  f.write("Tingkat Akurasi Forcasting untuk besok: {}%</pre>".format(mape[-1]))
