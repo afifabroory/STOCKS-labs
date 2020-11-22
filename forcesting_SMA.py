@@ -17,11 +17,12 @@ source = input("Enter Input [YAHOO/IDX]: ").upper()
 # LOAD DATA JSON OF LQ45
 STOCKS = json.load(open("data/stock_index/LQ45.json"))
 
+# TRAVARSE TO ALL STOCKS ELEMENT TIME COMPLEXITY: O(N)
 for k in range(0, len(STOCKS)):
   # LOAD JSON FILE
-  DATA = json.load(open("STOCK_CHART/SMA({})-{}-{}-{}.json"
-                    .format(n, STOCKS[k], source,
-                    (str(currentTime.day) + str(currentTime.month) 
+  DATA = json.load(open("STOCK_CHART/{}-{}-{}.json"
+                    .format(STOCKS[k], source,
+                    (str(currentTime.day)+ "-" + str(currentTime.month) + "-"
                     + str(currentTime.year))
                     )))
 
@@ -74,7 +75,8 @@ for k in range(0, len(STOCKS)):
     mape.append(float("{:.2f}".format(100 - ((mapeSum/(t+1) * 100)))))
 
 
-  f = open("data/html/{}.html".format(STOCKS[k]), 'w') # LOAD FILE/CREATE FILE
+  # LOAD FILE/CREATE FILE
+  f = open("data/html/SMA{}-{}.html".format(n, STOCKS[k]), 'w')
 
   # WRITE TO HTML
   f.write("""
