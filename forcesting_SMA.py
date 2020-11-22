@@ -17,7 +17,7 @@ source = input("Enter Input [YAHOO/IDX]: ").upper()
 # LOAD DATA JSON OF LQ45
 STOCKS = json.load(open("data/stock_index/LQ45.json"))
 
-for k in range(0, len(LQ45)):
+for k in range(0, len(STOCKS)):
   # LOAD JSON FILE
   DATA = json.load(open("STOCK_CHART/SMA({})-{}-{}-{}.json"
                     .format(n, STOCKS[k], source,
