@@ -1,49 +1,104 @@
+import requests
+import calendar
+import time
+import urllib.request
+import json
 import target_web as data
-import datetime as time
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from time import sleep
+from bs4 import BeautifulSoup
 
-SOURCE = "YAHOO"
-LQ45 = [
-				"AALI","ACES","ADHI","ADRO","AKRA","ANTM","APLN","ASII","ASSA","BBCA",
-				"BBKP","BBNI","BBRI","BBTN","BDMN","BEST","BJBR","BJTM","BMRI","BMTR",
-				"BNLI","BRIS","BRPT","BSDE","BTPS","BULL","CLEO","CPIN","CTRA","DMAS",
-				"ELSA","ERAA","EXCL","GGRM","GIAA","HKMU","HMSP","HOKI","ICBP","INAF",
-				"INCO","INDF","INDY","INKP","INTP","ISAT","ITMG","JPFA","JRPT","JSMR",
-				"KAEF","KBLI","KINO","KLBF","LINK","LPKR","LPPF","LSIP","MAIN","MAPI",
-				"MDKA","MEDC","MIKA","MNCN","MTDL","MYOR","PGAS","PNBN","PNLF","PSAB",
-				"PTBA","PTPP","PWON","RALS","SCMA","SIDO","SILO","SIMP","SMBR","SMGR",
-				"SMRA","SMSM","SPTO","SRIL","SSIA","SSMS","TBIG","TINS","TKIM","TLKM",
-				"TOWR","TPIA","UNTR","UNVR","WEGE","WIKA","WOOD","WSBP","WSKT","WTON"
-			 ]
+"""class Scraping
+  This class to provide a complete URL of Scraping in given parameter
+  stockCode, keyDomain, keyPath, keyParameter.
+  This class have one method getURL()
 
-for i in range(1, len(LQ45)):
-		driver = webdriver.Firefox('/usr/local/bin')
+  CONSTRUCTOR
+     Constructor is used for initialization parameter 
+    keyDomain, keyPath, & keyParameter.
+    
+    __init__(stockCode, keyDomain, keyPath, keyParameter)
+      stockCode   : for changing URL parameter.
+                     stockCode format index is 0.
+                     default value for stockCode is '' (EMPTY STRING).
+      keyDomain    : is a key for accessing dictionary domainDict.
+      keyPath      : is a key for accessing dictionary pathDict. Where it's is from keyDomain + keyParameter.
+      keyParameter : is a key for accesing dictionary parameterDict. Where it's is from keyDomain + keyParameter
 
-		currentTime = time.datetime.now()
-		DATE = str(currentTime.day) + '-' + str(currentTime.month) + '-' + str(currentTime.year)
+  METHOD
+    getURL()
+     Method getURL() aims to process a complete URL from a dictionary
+    domain, path and parameter.
 
-		DATA = data.TargetWeb("YAHOO", "STOCK_CHART", LQ45[i])
+    This method doesn't need any input anymore.
 
-		# ACCESS WEB USING PROXY
-		##driver.get("https://www.proxysite.com/")
-		##element = driver.find_element_by_name('d')
-		##element.send_keys(DATA.getURL())
-		##element.send_keys(Keys.ENTER)
+    This method accessing Dictionary domainDict, pathDict and paramterDict
+    Values using Key keyDomain, keyPath and keyParameter.
+    Values and concatenate each Values of Dictionary and
+    change the string format of stockCode position to given input.
 
-		# ACESS WEB !(USING PROXY)
-		driver.get("view-source:"+ DATA.getURL())
+    Method getURL() return a variable string URL."""
+class Scraping():
 
-		# CHANGE WEBSITE VIEW TO VIEW-SOURCE (IF USING PROXY)
-		##url = driver.current_url
-		##driver.get("view-source:" + url)
+    global  domainDict
+    global pathDict
+    global parameterDict
+    
+    domainDict = {
+                  "IDX": "view-source:https://www.idx.co.id/umbraco/Surface",
+                  "YAHOO": "https://query2.finance.yahoo.com"
+                 }
+    pathDict = {
+                "IDX_TRADING_INFO": "/ListedCompany/GetTradingInfoSS?",
+                "IDX_STOCK_CHART": "/Helper/GetStockChart?",
+                "YAHOO_STOCK_CHART": "/v8/finance/chart/{0}.JK"
+               }
+    parameterDict = {
+                     "IDX_TRADING_INFO": "code={0}&language=id-id&draw=2&columns[0][data]=No&columns[0][name]=&"
+                 			         "columns[0][searchable]=true&columns[0][orderable]=false&"
+                 				     "columns[0][search][value]=&columns[0][search][regex]=false&"
+                 				     "columns[1][data]=Date&columns[1][name]=&columns[1][searchable]=true&"
+                 				     "columns[1][orderable]=false&columns[1][search][value]=&"
+                 				     "columns[1][search][regex]=false&columns[2][data]=OpenPrice&"
+                 				     "columns[2][name]=&columns[2][searchable]=true&"
+                 				     "columns[2][orderable]=false&columns[2][search][value]=&"
+                 				     "columns[2][search][regex]=false&columns[3][data]=High&"
+                 				     "columns[3][name]=&columns[3][searchable]=true&columns[3][orderable]=false&"
+                 				     "columns[3][search][value]=&columns[3][search][regex]=false&"
+                 				     "columns[4][data]=Low&columns[4][name]=&columns[4][searchable]=true&"
+                 				     "columns[4][orderable]=false&columns[4][search][value]=&"
+                 				     "columns[4][search][regex]=false&columns[5][data]=Close&"
+                 				     "columns[5][name]=&columns[5][searchable]=true&columns[5][orderable]=false&"
+                 				     "columns[5][search][value]=&columns[5][search][regex]=false&"
+                 				     "columns[6][data]=Volume&columns[6][name]=&columns[6][searchable]=true&"
+                 				     "columns[6][orderable]=false&columns[6][search][value]=&"
+                 				     "columns[6][search][regex]=false&columns[7][data]=Value&"
+                 				     "columns[7][name]=&columns[7][searchable]=true&columns[7][orderable]=false&"
+                 				     "columns[7][search][value]=&columns[7][search][regex]=false&"
+                 				     "columns[8][data]=Frequency&columns[8][name]=&columns[8][searchable]=true&"
+                 				     "columns[8][orderable]=false&columns[8][search][value]=&"
+                 				     "columns[8][search][regex]=false&start=0&length=60&search[value]=&"
+                 				     "search[regex]=false&_=1605794489395",
+                     "IDX_STOCK_CHART": "indexCode={0}&period=1d",
+                     "YAHOO_STOCK_CHART":"?&symbol={0}.JK&period1=-122198400&period2={1}&interval=1d"
+                    }
 
-		# GET PAGE TEXT
-		dataPage = driver.find_element_by_xpath("/html/body/pre").text
+#"YAHOO_STOCK_CHART":"?&symbol={0}.JK&period1=-122198400&period2=1605875079&interval=1d&includePrePost=true&events=div|split|earn&lang=en-US&region=US&crumb=BLiN6wzK37F&corsDomain=finance.yahoo.com"
 
-		file = open("STOCK_CHART/{}-YAHOO-{}.json".format(LQ45[i] ,DATE), 'w')
-		file.write(dataPage)
+    def __init__(Scraping, keyParameter, keyDomain = "YAHOO", stockCode = ''):
+      Scraping.stockCode = stockCode.upper()
+      Scraping.keyDomain = keyDomain.upper()
+      Scraping.keyPath = (keyDomain + '_' + keyParameter).upper()
+      Scraping.keyParameter = (keyDomain + '_' + keyParameter).upper()
+      Scraping.ts = calendar.timegm(time.gmtime())
 
-		sleep(120)
-		driver.quit()
+    def getData(Scraping):
+      domain = domainDict[Scraping.keyDomain]
+      path = pathDict[Scraping.keyPath]
+      parameter = parameterDict[Scraping.keyParameter]
+
+      URL = (domain + path + parameter).format(Scraping.stockCode, Scraping.ts)
+
+      page = requests.get(URL)
+      scraping = BeautifulSoup(page.text, "html.parser")
+      
+      return json.loads(scraping.get_text())
+

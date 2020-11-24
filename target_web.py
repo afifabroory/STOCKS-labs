@@ -1,3 +1,6 @@
+import calendar
+import time
+
 """class TargetWeb
   This class to provide a complete URL of TargetWeb in given parameter
   stockCode, keyDomain, keyPath, keyParameter.
@@ -70,7 +73,7 @@ class TargetWeb():
                  				     "columns[8][search][regex]=false&start=0&length=60&search[value]=&"
                  				     "search[regex]=false&_=1605794489395",
                      "IDX_STOCK_CHART": "indexCode={0}&period=1d",
-                     "YAHOO_STOCK_CHART":"?&symbol={0}.JK&period1=-122198400&period2=1605875079&interval=1d"
+                     "YAHOO_STOCK_CHART":"?&symbol={0}.JK&period1=-122198400&period2={1}&interval=1d"
                     }
 
 #"YAHOO_STOCK_CHART":"?&symbol={0}.JK&period1=-122198400&period2=1605875079&interval=1d&includePrePost=true&events=div|split|earn&lang=en-US&region=US&crumb=BLiN6wzK37F&corsDomain=finance.yahoo.com"
@@ -80,13 +83,14 @@ class TargetWeb():
         TargetWeb.keyDomain = keyDomain.upper()
         TargetWeb.keyPath = (keyDomain + '_' + keyParameter).upper()
         TargetWeb.keyParameter = (keyDomain + '_' + keyParameter).upper()
+        TargetWeb.ts = calendar.timegm(time.gmtime())
 
     def getURL(TargetWeb):
         domain = domainDict[TargetWeb.keyDomain]
         path = pathDict[TargetWeb.keyPath]
         parameter = parameterDict[TargetWeb.keyParameter]
 
-        URL = (domain + path + parameter).format(TargetWeb.stockCode)
+        URL = (domain + path + parameter).format(TargetWeb.stockCode, TargetWeb.ts)
         print(URL)
 
         return URL
