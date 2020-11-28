@@ -1,2 +1,2 @@
 # STOCKS
-Repository ini bertujuan untuk percobaan terkait saham.
+Repository ini bertujuan untuk percobaan terkait saham Indonesa.
