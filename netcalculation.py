@@ -1,5 +1,3 @@
-# Copyright (c) 2021 Muhammad Afif Abroory <afif.abroory@gmail.com>
-
 import math
 
 print("\nFee Calculation for BNI Securities\n")
@@ -13,7 +11,7 @@ while (option != 'B' and option != 'S'):
 	option = input("Membeli atau Menjual? [B/S] >> ").upper()
 	
 BUY_FEE = 0.3 # Constant number for Tax + Broker fee in BNI Securities
-SELL_FEE = 0.4 # Constatn number for Tax + Broker fee in BNI Securities
+SELL_FEE = 0.4 # Constant number for Tax + Broker fee in BNI Securities
 
 # Calculate total without tax and fee a.k.a gross (maybe the terms is wrong). 
 grossTotal = price * share * 100 # 100 is magic number for 1 lot. which is 1 lot equal to 100 (RIP English wkwk)
